@@ -2,6 +2,9 @@ package geneticalgorithm.individual;
 
 import java.util.Random;
 
+/**
+ * A factory to create individuals represented by real numbers selected randomly from the range provided
+ */
 public class RealListIndividualFactory implements IndividualFactory<RealListIndividual> {
     private final Random rnd;
     private final double min,max;

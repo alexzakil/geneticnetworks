@@ -2,13 +2,20 @@ package geneticalgorithm.individual;
 
 import java.util.BitSet;
 
-public class BitSetIndividual extends Individual{
+/**
+ * An individual that is represented by a binary string.
+ */
+public class BinaryIndividual extends Individual{
 
+    /**
+     * Why is it called a set when it is obviously a list or an array? Java knows.
+     */
     BitSet genome;
+
     int numGenes;
 
 
-    public BitSetIndividual(BitSet genome, int numGenes) {
+    public BinaryIndividual(BitSet genome, int numGenes) {
         this.genome = genome;
         this.numGenes = numGenes;
     }
@@ -25,7 +32,7 @@ public class BitSetIndividual extends Individual{
 
     @Override
     public Individual createClone() {
-        BitSetIndividual individual = new BitSetIndividual((BitSet) genome.clone(), numGenes);
+        BinaryIndividual individual = new BinaryIndividual((BitSet) genome.clone(), numGenes);
         individual.setFitness(getFitness());
         return individual;
     }

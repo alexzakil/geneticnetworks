@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.*;
 
+/**
+ * A data provider that reads information from a CSV file.
+ * An input file should have a single header line.
+ */
 public class CsvDataProvider implements DataProvider {
 
     Set<Integer> featureIndexes = new HashSet<>();
@@ -16,6 +20,13 @@ public class CsvDataProvider implements DataProvider {
     private double[][] feature;
     private double[][] observed;
 
+    /**
+     * Creates a new CSV data provider.
+     * @param file the file to read
+     * @param featureHeader the value that should be in feature column headers of the input file
+     * @param observedHeader the value that should be in the the observed column headers of the input file
+     * @throws Exception
+     */
     public CsvDataProvider(File file, String featureHeader, String observedHeader) throws Exception {
         CSVReader reader = new CSVReader(new FileReader(file));
         List<String[]> all = reader.readAll();

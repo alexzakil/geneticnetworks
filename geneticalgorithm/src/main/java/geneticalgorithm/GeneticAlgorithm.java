@@ -1,6 +1,6 @@
 package geneticalgorithm;
 
-import geneticalgorithm.evaluation.Evaluator;
+import geneticalgorithm.evaluation.FitnessFunction;
 import geneticalgorithm.generation.GenerationManager;
 import geneticalgorithm.individual.Individual;
 import geneticalgorithm.individual.IndividualFactory;
@@ -10,6 +10,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An algorithm to find a solution to a problem using evolutionary methods.
+ * A population of individuals (each representing a solution) is generated (usually randomly) and then pass through
+ * several generations. Individuals have fitness that measures how good a solution they represent.
+ * Each generation should create a population where the individuals represent better solutions.
+ * The algorithm stops either after a fixed number of generations or after an individual in the population has fitness
+ * that is higher than the required fitness.
+ * The algorithm returns the final population. The last individual of this population represents the best solution
+ *
+ * @param <I>
+ */
 public class GeneticAlgorithm <I extends Individual>{
 
     static final Logger logger = Logger.getLogger(GeneticAlgorithm.class);
@@ -17,15 +28,21 @@ public class GeneticAlgorithm <I extends Individual>{
     List<I> population;
 
     private IndividualFactory<I> individualFactory;
-    private Evaluator<I> evaluator;
+    private FitnessFunction<I> fitnessFunction;
     private GenerationManager<I> generationManager;
 
     public GeneticAlgorithm() {
     }
 
-    public GeneticAlgorithm(IndividualFactory<I> individualFactory, Evaluator<I> evaluator, GenerationManager<I> generationManager) {
+    /**
+     * Creates a new genetic algorithm
+     * @param individualFactory a factory to create the initial population
+     * @param fitnessFunction a fitness funciton to evaluate individuals
+     * @param generationManager the generation manager
+     */
+    public GeneticAlgorithm(IndividualFactory<I> individualFactory, FitnessFunction<I> fitnessFunction, GenerationManager<I> generationManager) {
         this.individualFactory = individualFactory;
-        this.evaluator = evaluator;
+        this.fitnessFunction = fitnessFunction;
         this.generationManager = generationManager;
     }
 
@@ -33,42 +50,60 @@ public class GeneticAlgorithm <I extends Individual>{
         return individualFactory;
     }
 
+    /**
+     *
+     * @param individualFactory a factory to create the initial population
+     */
     public void setIndividualFactory(IndividualFactory<I> individualFactory) {
         this.individualFactory = individualFactory;
     }
 
-    public Evaluator<I> getEvaluator() {
-        return evaluator;
+    public FitnessFunction<I> getFitnessFunction() {
+        return fitnessFunction;
     }
 
-    public void setEvaluator(Evaluator<I> evaluator) {
-        this.evaluator = evaluator;
+    /**
+     *  a fitness funciton to evaluate individuals
+     * @param fitnessFunction
+     */
+    public void setFitnessFunction(FitnessFunction<I> fitnessFunction) {
+        this.fitnessFunction = fitnessFunction;
     }
 
     public GenerationManager<I> getGenerationManager() {
         return generationManager;
     }
 
+    /**
+     * the generation manager
+     * @param generationManager
+     */
     public void setGenerationManager(GenerationManager<I> generationManager) {
         this.generationManager = generationManager;
     }
 
 
-
+    /**
+     * Runs the genetic algorithm
+     * @param populationSize poplation size to use. A large population will usually give better results, but the algorithm will take more time.
+     * @param maxGenerations maximum number of generations. The algorithm will stop once this generation is reached.
+     * @param requiredFitness wanted fitness of the algorithm. The algorithm will stop once an individual has this fitness.
+     * @return the final population. The last individual of this population represents the best solution
+     */
     public List<I> runAlgorithm(int populationSize, int maxGenerations, double requiredFitness) {
         population = new ArrayList<>(populationSize);
         for(int i =0; i<populationSize;i++){
 
 
             I individual = individualFactory.createIndividual();
-            individual.setFitness(evaluator.evaluate(individual));
+            individual.setFitness(fitnessFunction.getFitness(individual));
             population.add(individual);
         }
 
         int generation = 0;
 
         do {
-            population = generationManager.nextGeneration(population,evaluator);
+            population = generationManager.nextGeneration(population, fitnessFunction);
             Collections.sort(population);
             generation++;
             if(generation % 100 == 0){

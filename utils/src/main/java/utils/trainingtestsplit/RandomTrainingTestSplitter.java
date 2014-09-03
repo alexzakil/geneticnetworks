@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This splitter splits training and test data according to a set ratio
+ */
 public class RandomTrainingTestSplitter implements TrainingTestSplitter{
+
 
     double testPart;
 
     private double[][] trainingFeature,testFeature,fullFeature;
     private double[][] trainingObserved, testObserved, fullObserved;
 
+    /**
+     *
+     * @param testPart the ratio of test rows to be returned.
+     */
     public RandomTrainingTestSplitter(double testPart) {
         this.testPart = testPart;
     }

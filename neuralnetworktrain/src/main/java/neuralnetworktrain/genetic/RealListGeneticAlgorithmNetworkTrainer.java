@@ -7,7 +7,11 @@ import geneticalgorithm.individual.RealListIndividual;
 import geneticalgorithm.individual.RealListIndividualFactory;
 import neuralnetwork.errorevaluation.ErrorEvaluator;
 import neuralnetwork.transferfunction.TransferFunction;
-import neuralnetworktrain.genetic.evaluator.RealListNetworkEvaluator;
+import neuralnetworktrain.genetic.evaluation.RealListNetworkFitnessFunction;
+
+/**
+ * An algorithm to build neural networks using a genetic algorithm where every individual is represented as a list of real numbers.
+ */
 
 public class RealListGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetworkTrainer<RealListIndividual> {
 
@@ -21,8 +25,8 @@ public class RealListGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetw
     }
 
     @Override
-    protected RealListNetworkEvaluator createNetworkEvaluator(double[][] feature, double[][] observed, TransferFunction transferFunction) {
-        return new RealListNetworkEvaluator(feature, observed, errorEvaluator,  transferFunction, layersSize);
+    protected RealListNetworkFitnessFunction createNetworkFitnessFunction(double[][] feature, double[][] observed, TransferFunction transferFunction) {
+        return new RealListNetworkFitnessFunction(feature, observed, errorEvaluator,  transferFunction, layersSize);
     }
 
     @Override

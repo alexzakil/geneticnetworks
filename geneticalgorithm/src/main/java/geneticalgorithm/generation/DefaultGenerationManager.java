@@ -5,6 +5,11 @@ import geneticalgorithm.individual.Individual;
 import geneticalgorithm.mutation.Mutator;
 import geneticalgorithm.selection.Selector;
 
+/**
+ * Most generation managers would have a selector algorithm, a crossover algorithm and a mutator algorithm.
+ * This class could be their superclass.
+ * @param <I>
+ */
 public abstract class DefaultGenerationManager<I extends Individual> implements GenerationManager<I> {
 
     Selector selector;

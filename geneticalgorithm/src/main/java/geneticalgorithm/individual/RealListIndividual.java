@@ -1,5 +1,8 @@
 package geneticalgorithm.individual;
 
+/**
+ * An individual that is represented by a list of real numbers.
+ */
 public class RealListIndividual extends Individual{
 
     double[] genome;

@@ -1,5 +1,8 @@
 package neuralnetwork.builder;
 
+/**
+ * Creates new neurons completely randomly. Every parameter returned is between minValue and maxValue
+ */
 public class RandomNetworkFactory extends AbstractNetworkFactory {
     private double maxParam;
     private double minParam;
@@ -7,6 +10,10 @@ public class RandomNetworkFactory extends AbstractNetworkFactory {
     public RandomNetworkFactory(double minParam,double maxParam) {
         this.maxParam = maxParam;
         this.minParam = minParam;
+    }
+
+    @Override
+    protected void beforeNetworkCreation() {
     }
 
     protected double[] getNeuronParams(int numberOfParams) {

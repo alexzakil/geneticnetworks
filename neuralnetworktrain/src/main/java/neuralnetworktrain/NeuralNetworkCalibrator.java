@@ -9,10 +9,16 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A tool for testing which configurations work best for training neural networks.
+ */
 public class NeuralNetworkCalibrator {
     static final Logger logger = Logger.getLogger(NeuralNetworkCalibrator.class);
 
 
+    /**
+     * The trainer to use during the calibration
+     */
     AbstractNeuralNetworkTrainer neuralNetworkTrainer;
 
     public NeuralNetworkCalibrator(AbstractNeuralNetworkTrainer neuralNetworkTrainer) {
@@ -27,6 +33,17 @@ public class NeuralNetworkCalibrator {
         this.neuralNetworkTrainer = neuralNetworkTrainer;
     }
 
+    /**
+     * Try the training with different layer sizes
+     * @param maxGenerations number of generations to run the training
+     * @param numberOfRuns number of times to run for each layer size permutation. The average score per permutation will be found. More runs means less random variation but much longer run time. At least 3 is recommended
+     * @param feature the input to train the network to recognize
+     * @param observed the output to train the network to return
+     * @param minNumberOfLayers the minimum number of layers to try
+     * @param maxNumberOfLayers the maximum number of layers to try
+     * @param minLayerSize the minimum neurons per layer to try
+     * @param maxLayerSize the maximum neurons per layer to try
+     */
     public void calibrateLayerSize(int maxGenerations, int numberOfRuns, double[][] feature, double[][] observed, int minNumberOfLayers, int maxNumberOfLayers, int minLayerSize, int maxLayerSize){
         List<List<Integer>> permutations = new ArrayList<>();
         for(int numLayers = minNumberOfLayers; numLayers<=maxNumberOfLayers; numLayers++) {

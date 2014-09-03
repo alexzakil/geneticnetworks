@@ -16,11 +16,24 @@ import utils.TimeUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An algorithm to build a neural network using backpropagation. Requires that the network transfer funciton be
+ * SigmoidTransferFunction or BiasSigmoidTransferFunction.
+ * For more information: http://en.wikipedia.org/wiki/Backpropagation
+ *
+ */
 public class BackpropagationTrainer extends AbstractNeuralNetworkTrainer {
 
     static final Logger logger = Logger.getLogger(BackpropagationTrainer.class);
 
+    /**
+     * The learning rate of the algorithm. The greater the ratio, the faster the neuron trains; the lower the ratio, the more accurate the training is.
+     */
     double learningRate = 0.1;
+    /**
+     * The momentum of the algorithm - how much previous weight changes affect current weight change.
+     * For more information: http://en.wikiversity.org/wiki/Learning_and_neural_networks#Momentum_learning
+     */
     double momentum = 0.0;
 
     Map<Neuron, Double[]> oldChanges;
@@ -30,6 +43,15 @@ public class BackpropagationTrainer extends AbstractNeuralNetworkTrainer {
         setMaxGenerations(Integer.MAX_VALUE);
     }
 
+    /**
+     *
+     * @param learningRate  The learning rate of the algorithm. The greater the ratio, the faster the neuron trains; the lower the ratio, the more accurate the training is.
+     * @param momentum The momentum of the algorithm - how much previous weight changes affect current weight change.
+     * For more information: http://en.wikiversity.org/wiki/Learning_and_neural_networks#Momentum_learning
+     * @param wantedError
+     * @param errorEvaluator
+     * @param layersSize
+     */
     public BackpropagationTrainer(double learningRate, double momentum, double wantedError, ErrorEvaluator errorEvaluator, int[] layersSize) {
         this.learningRate = learningRate;
         this.momentum = momentum;
@@ -51,6 +73,11 @@ public class BackpropagationTrainer extends AbstractNeuralNetworkTrainer {
         return momentum;
     }
 
+    /**
+     *
+     * @param momentum The momentum of the algorithm - how much previous weight changes affect current weight change.
+     * For more information: http://en.wikiversity.org/wiki/Learning_and_neural_networks#Momentum_learning
+     */
     public void setMomentum(double momentum) {
         this.momentum = momentum;
     }
@@ -73,7 +100,7 @@ public class BackpropagationTrainer extends AbstractNeuralNetworkTrainer {
 
         long startTime = System.currentTimeMillis();
 
-        withBias = network.getTransferFunction() instanceof BiasSigmoidTransferFunction;
+        withBias = network.getTransferFunction() instanceof BiasSigmoidTransferFunction || network.getTransferFunction() instanceof ParametrizedBiasSigmoidTransferFunction;
         oldChanges = new HashMap<>();
 
         double error;

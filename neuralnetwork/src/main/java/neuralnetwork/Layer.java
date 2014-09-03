@@ -1,5 +1,8 @@
 package neuralnetwork;
 
+/**
+ * A layer of neurons in a neural network
+ */
 public class Layer {
 
     Neuron [] neurons;

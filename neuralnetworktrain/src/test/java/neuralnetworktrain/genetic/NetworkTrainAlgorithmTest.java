@@ -1,11 +1,11 @@
 package neuralnetworktrain.genetic;
 
-import geneticalgorithm.crossover.OnePointCut;
+import geneticalgorithm.crossover.BinaryOnePointCut;
 import geneticalgorithm.generation.AdditionGenerationManager;
 import geneticalgorithm.generation.GenerationManager;
 import geneticalgorithm.generation.ReplacementGenerationManager;
-import geneticalgorithm.individual.BitSetIndividual;
-import geneticalgorithm.mutation.BitSetMutator;
+import geneticalgorithm.individual.BinaryIndividual;
+import geneticalgorithm.mutation.BinaryMutator;
 import geneticalgorithm.selection.RouletteSelector;
 import neuralnetwork.Network;
 import neuralnetwork.errorevaluation.ChenErrorEvaluator;
@@ -28,7 +28,7 @@ public class NetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<BitSetIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new OnePointCut(), new BitSetMutator(0.01),0.6,4);
+        GenerationManager<BinaryIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6,4);
         int[] layersSize = {10, 3};
         BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
                         50000, 50, 0.01,generationManager, new ChenErrorEvaluator(), layersSize,4);
@@ -44,7 +44,23 @@ public class NetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<BitSetIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new OnePointCut(), new BitSetMutator(0.01),0.6);
+        GenerationManager<BinaryIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6);
+        int[] layersSize = {4,3};
+        BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
+                5000, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 4);
+
+        Network network = trainer.trainNetwork(splitter.getTrainingFeature(), splitter.getTrainingObserved(), new ParametrizedBiasSigmoidTransferFunction());
+
+        double error = new ChenErrorEvaluator().evaluateError(network, splitter.getTestFeature(), splitter.getTestObserved());
+        assertThat(error).isLessThan(0.08);
+    }
+
+    @Test
+    public void testAdditionAlgorithmWine() throws Exception {
+        TrainingTestSplitter splitter = TestUtils.getWineData();
+
+
+        GenerationManager<BinaryIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6);
         int[] layersSize = {4,3};
         BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
                 5000, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 4);
@@ -60,7 +76,7 @@ public class NetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<BitSetIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new OnePointCut(), new BitSetMutator(0.01),0.6,4);
+        GenerationManager<BinaryIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6,4);
         int[] layersSize = {4,3};
         BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
                 600, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 4);

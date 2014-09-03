@@ -1,7 +1,7 @@
 package geneticalgorithm.generation;
 
 import geneticalgorithm.crossover.CrossOver;
-import geneticalgorithm.evaluation.Evaluator;
+import geneticalgorithm.evaluation.FitnessFunction;
 import geneticalgorithm.individual.Individual;
 import geneticalgorithm.mutation.Mutator;
 import geneticalgorithm.selection.Selector;
@@ -9,6 +9,13 @@ import utils.NumberUtils;
 
 import java.util.*;
 
+/**
+ * In this algorithm, the population size stays the same after each generation.
+ * In this algorithm, children replace the individuals of the old generation.
+ * In the elitism defined is larger than 0, then that number of the most fit individuals of the old generation are
+ * moved as they are to the new generation.
+ * @param <I>
+ */
 public class ReplacementGenerationManager<I extends Individual> extends DefaultGenerationManager<I> {
 
     int elitism=0;
@@ -18,11 +25,26 @@ public class ReplacementGenerationManager<I extends Individual> extends DefaultG
     public ReplacementGenerationManager() {
     }
 
+    /**
+     *
+     * @param selector the algorithm to select individuals that should mate
+     * @param crossOver the algorithm to create new individuals from mating individuals. Must always return two children.
+     * @param mutator the algorithm to mutete new individuals
+     * @param pCross the probability that an individual selected for mating would be allowed to mate.
+     */
     public ReplacementGenerationManager(Selector selector, CrossOver<I> crossOver, Mutator<I> mutator, double pCross) {
         super(selector, crossOver, mutator);
         this.pCross = pCross;
     }
 
+    /**
+     *
+     * @param selector the algorithm to select individuals that should mate
+     * @param crossOver the algorithm to create new individuals from mating individuals
+     * @param mutator the algorithm to mutete new individuals
+     * @param pCross the probability that an individual selected for mating would be allowed to mate.
+     * @param elitism the number of most fit individuals that should be retained from the old population to the new.
+     */
     public ReplacementGenerationManager(Selector selector, CrossOver<I> crossOver, Mutator<I> mutator, double pCross,int elitism) {
         super(selector, crossOver, mutator);
         this.elitism = elitism;
@@ -30,7 +52,7 @@ public class ReplacementGenerationManager<I extends Individual> extends DefaultG
     }
 
     @Override
-    public List<I> nextGeneration(List<I> oldGeneration,Evaluator<I> evaluator) {
+    public List<I> nextGeneration(List<I> oldGeneration,FitnessFunction<I> fitnessFunction) {
         List<I> elite = null;
 
         List<I> selection = selector.select(oldGeneration);
@@ -64,7 +86,7 @@ public class ReplacementGenerationManager<I extends Individual> extends DefaultG
 
         for (I newIndividual : selection) {
             mutator.mutate(newIndividual);
-            newIndividual.setFitness(evaluator.evaluate(newIndividual));
+            newIndividual.setFitness(fitnessFunction.getFitness(newIndividual));
         }
 
         if(elitism > 0) {

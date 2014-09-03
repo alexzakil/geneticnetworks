@@ -3,6 +3,12 @@ package geneticalgorithm.mutation;
 import geneticalgorithm.individual.RealListIndividual;
 import utils.NumberUtils;
 
+/**
+ * An algorithm to mutate a individual represented as a list of real numbers.
+ * The mutator receives a mutationProbability value, and each number in the list
+ * has this probability to be mutated.
+ * A Gaussian distributed number is generated and is added for each mutated number.
+ */
 public class GaussianMutator implements Mutator<RealListIndividual> {
 
     double mutationProbability;

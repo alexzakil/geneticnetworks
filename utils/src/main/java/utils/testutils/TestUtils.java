@@ -7,10 +7,29 @@ import utils.trainingtestsplit.TrainingTestSplitter;
 
 import java.io.File;
 
+/**
+ * Utilities for testing machine learning
+ */
 public class TestUtils {
 
     public static TrainingTestSplitter getIrisData() throws Exception {
-        CsvDataProvider csvDataProvider = new CsvDataProvider(new File(TestUtils.class.getResource("/iris.csv").getFile()), "i", "o");
+        return getCsvData("/iris.csv");
+    }
+
+    public static TrainingTestSplitter getWineData() throws Exception {
+        return getCsvData("/DataWine.csv");
+    }
+
+    public static TrainingTestSplitter getGlassData() throws Exception {
+        return getCsvData("/glass.csv");
+    }
+
+    public static TrainingTestSplitter getVehicleData() throws Exception {
+        return getCsvData("/vehicle.csv");
+    }
+
+    private static TrainingTestSplitter getCsvData(String filename) throws Exception {
+        CsvDataProvider csvDataProvider = new CsvDataProvider(new File(TestUtils.class.getResource(filename).getFile()), "i", "o");
         MinMaxNormalizer normalizer = new MinMaxNormalizer();
         double[][] feature = csvDataProvider.getFeature();
         normalizer.normalize(feature);

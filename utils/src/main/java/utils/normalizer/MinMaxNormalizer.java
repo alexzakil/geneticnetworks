@@ -3,7 +3,16 @@ package utils.normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Normalizes all values to be in the [0,1] range using feature scaling (http://en.wikipedia.org/wiki/Feature_scaling)
+ */
 public class MinMaxNormalizer implements DataNormalizer {
+
+    /**
+     * For each array in the input, find the minimum and the maximum. Then normalize values in each array
+     * using feature scaling.
+     * @param input The input array
+     */
     @Override
     public void normalize(double[][] input) {
         Map<Integer,Double[]> indexToMinMaxMap = new HashMap<>();

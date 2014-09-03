@@ -1,6 +1,6 @@
 package neuralnetworktrain.genetic;
 
-import geneticalgorithm.crossover.SinglePointCross;
+import geneticalgorithm.crossover.RealListOnePointCut;
 import geneticalgorithm.generation.AdditionGenerationManager;
 import geneticalgorithm.generation.GenerationManager;
 import geneticalgorithm.generation.ReplacementGenerationManager;
@@ -24,14 +24,42 @@ public class RealListNetworkTrainAlgorithmTest {
 
 
     @Test
-    public void testAdditionAlgorithm() throws Exception {
+         public void testAdditionAlgorithm() throws Exception {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new SinglePointCross(), new GaussianMutator(0.01),0.9);
-        int[] layersSize = {10,3};
+        testAddition(splitter, 0.01);
+    }
+
+    @Test
+         public void testAdditionAlgorithmWine() throws Exception {
+        TrainingTestSplitter splitter = TestUtils.getWineData();
+
+
+        testAddition(splitter, 0.01);
+    }
+
+    @Test
+    public void testAdditionAlgorithmGlass() throws Exception {
+        TrainingTestSplitter splitter = TestUtils.getGlassData();
+
+
+        testAddition(splitter, 0.06);
+    }
+
+    @Test
+    public void testAdditionAlgorithmVehicles() throws Exception {
+        TrainingTestSplitter splitter = TestUtils.getVehicleData();
+
+
+        testAddition(splitter, 0.05);
+    }
+
+    private void testAddition(TrainingTestSplitter splitter, double wantedError) {
+        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new RealListOnePointCut(), new GaussianMutator(0.01),0.9);
+        int[] layersSize = {10,splitter.getFullObserved()[0].length};
         RealListGeneticAlgorithmNetworkTrainer trainer = new RealListGeneticAlgorithmNetworkTrainer(
-                5000, 30, 0.01,generationManager, new MeanSquareErrorEvaluator(), layersSize);
+                5000, 30, wantedError,generationManager, new MeanSquareErrorEvaluator(), layersSize);
 
         Network network = trainer.trainNetwork(splitter.getFullFeature(), splitter.getFullObserved(), new ParametrizedBiasSigmoidTransferFunction());
 
@@ -44,7 +72,7 @@ public class RealListNetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<RealListIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new SinglePointCross(), new GaussianMutator(0.01),0.9,4);
+        GenerationManager<RealListIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new RealListOnePointCut(), new GaussianMutator(0.01),0.9,4);
         int[] layersSize = {4,3};
         RealListGeneticAlgorithmNetworkTrainer trainer = new RealListGeneticAlgorithmNetworkTrainer(
                 5000, 30, 0.01,generationManager, new MeanSquareErrorEvaluator(), layersSize);
@@ -61,7 +89,7 @@ public class RealListNetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new SinglePointCross(), new GaussianMutator(0.01),0.9);
+        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new RealListOnePointCut(), new GaussianMutator(0.01),0.9);
         int[] layersSize = {4,3};
         RealListGeneticAlgorithmNetworkTrainer trainer = new RealListGeneticAlgorithmNetworkTrainer(
                 5000, 30, 0.0001,generationManager, new MeanSquareErrorEvaluator(), layersSize);
@@ -73,12 +101,12 @@ public class RealListNetworkTrainAlgorithmTest {
     @Test
     public void testGeneticThenBackpropagation() throws Exception {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
-        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new SinglePointCross(), new GaussianMutator(0.01),0.9);
+        GenerationManager<RealListIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new RealListOnePointCut(), new GaussianMutator(0.01),0.9);
         int[] layersSize = {10,3};
         RealListGeneticAlgorithmNetworkTrainer trainer = new RealListGeneticAlgorithmNetworkTrainer(
                 5000, 30, 0.1,generationManager, new MeanSquareErrorEvaluator(), layersSize);
 
-        Network network = trainer.trainNetwork(splitter.getFullFeature(), splitter.getFullObserved(), new BiasSigmoidTransferFunction());
+        Network network = trainer.trainNetwork(splitter.getFullFeature(), splitter.getFullObserved(), new ParametrizedBiasSigmoidTransferFunction());
         BackpropagationTrainer backpropagationTrainer = new BackpropagationTrainer();
         backpropagationTrainer.setWantedError(0.01);
         backpropagationTrainer.setLayersSize(layersSize);

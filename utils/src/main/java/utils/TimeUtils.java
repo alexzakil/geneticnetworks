@@ -6,6 +6,11 @@ public class TimeUtils {
     public static final int MINUTE = 1000 * 60;
     public static final int SECOND = 1000;
 
+    /**
+     * A utility method to format time
+     * @param millis
+     * @return
+     */
     public static String formatTimePeriod(long millis){
         String time = "";
         if(millis > HOUR) {

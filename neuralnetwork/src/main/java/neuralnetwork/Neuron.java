@@ -1,5 +1,8 @@
 package neuralnetwork;
 
+/**
+ * A single neuron
+ */
 public class Neuron {
     double [] params;
     double[] lastInput;

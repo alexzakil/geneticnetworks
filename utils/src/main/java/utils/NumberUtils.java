@@ -5,6 +5,13 @@ import java.util.Random;
 
 public class NumberUtils {
 
+    public static Random rnd = new Random();
+
+    /**
+     * Converts a bit set to a number.
+     * @param bitSet
+     * @return
+     */
     public static double extractNumber(BitSet bitSet) {
 
         int value = 0;
@@ -16,7 +23,6 @@ public class NumberUtils {
 
     }
 
-    public static Random rnd = new Random();
 
 
 

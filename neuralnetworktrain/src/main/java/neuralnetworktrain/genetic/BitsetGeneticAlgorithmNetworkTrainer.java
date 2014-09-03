@@ -1,14 +1,17 @@
 package neuralnetworktrain.genetic;
 
 import geneticalgorithm.generation.GenerationManager;
-import geneticalgorithm.individual.BitSetIndividual;
-import geneticalgorithm.individual.BitSetIndividualFactory;
+import geneticalgorithm.individual.BinaryIndividual;
+import geneticalgorithm.individual.BinaryIndividualFactory;
 import geneticalgorithm.individual.IndividualFactory;
 import neuralnetwork.errorevaluation.ErrorEvaluator;
 import neuralnetwork.transferfunction.TransferFunction;
-import neuralnetworktrain.genetic.evaluator.BitsetNetworkEvaluator;
+import neuralnetworktrain.genetic.evaluation.BitsetNetworkFitnessFunction;
 
-public class BitsetGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetworkTrainer<BitSetIndividual> {
+/**
+ * An algorithm to build neural networks using a genetic algorithm where every individual is represented as a BitSet.
+ */
+public class BitsetGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetworkTrainer<BinaryIndividual> {
 
     private int genesForOneNumber;
 
@@ -16,20 +19,20 @@ public class BitsetGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetwor
     public BitsetGeneticAlgorithmNetworkTrainer() {
     }
 
-    public BitsetGeneticAlgorithmNetworkTrainer(int maxGenerations, int populationSize, double wantedError, GenerationManager<BitSetIndividual> generationManager, ErrorEvaluator errorEvaluator, int[] layersSize, int genesForOneNumber) {
+    public BitsetGeneticAlgorithmNetworkTrainer(int maxGenerations, int populationSize, double wantedError, GenerationManager<BinaryIndividual> generationManager, ErrorEvaluator errorEvaluator, int[] layersSize, int genesForOneNumber) {
         super(maxGenerations, populationSize, wantedError, generationManager, errorEvaluator, layersSize);
         this.genesForOneNumber = genesForOneNumber;
 
     }
 
     @Override
-    protected BitsetNetworkEvaluator createNetworkEvaluator(double[][] feature, double[][] observed, TransferFunction transferFunction) {
-        return new BitsetNetworkEvaluator(feature, observed, errorEvaluator, genesForOneNumber,  transferFunction, layersSize);
+    protected BitsetNetworkFitnessFunction createNetworkFitnessFunction(double[][] feature, double[][] observed, TransferFunction transferFunction) {
+        return new BitsetNetworkFitnessFunction(feature, observed, errorEvaluator, genesForOneNumber,  transferFunction, layersSize);
     }
 
     @Override
-    protected IndividualFactory<BitSetIndividual> createIndividualFactory(int numberOfParamsNeeded) {
-        return new BitSetIndividualFactory(numberOfParamsNeeded*genesForOneNumber);
+    protected IndividualFactory<BinaryIndividual> createIndividualFactory(int numberOfParamsNeeded) {
+        return new BinaryIndividualFactory(numberOfParamsNeeded*genesForOneNumber);
     }
 
 

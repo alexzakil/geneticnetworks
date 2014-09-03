@@ -2,6 +2,10 @@ package neuralnetwork.errorevaluation;
 
 import neuralnetwork.Network;
 
+/**
+ * A standard method of measuring network error. For every output calculate the square of the difference between the expected
+ * value and the actual value. Return the average of those squares.
+ */
 public class MeanSquareErrorEvaluator implements ErrorEvaluator {
     @Override
     public double evaluateError(Network network, double[][] feature, double[][] observed) {

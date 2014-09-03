@@ -6,7 +6,15 @@ import utils.NumberUtils;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class SinglePointCross implements CrossOver<RealListIndividual> {
+/**
+ * This algorithm always returns two children.
+ * A single crossover point on both parents' organism lists is selected.
+ * All data beyond that point in either organism string is swapped between the two parent organisms.
+ * The resulting organisms are the children.
+ * As described here:
+ * http://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#One-point_crossover
+ */
+public class RealListOnePointCut implements CrossOver<RealListIndividual> {
     @Override
     public Collection<RealListIndividual> breed(RealListIndividual mate0, RealListIndividual mate1) {
         double[] genome0 = mate0.getGenome();

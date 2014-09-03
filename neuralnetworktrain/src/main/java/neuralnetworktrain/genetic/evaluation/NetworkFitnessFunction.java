@@ -1,22 +1,44 @@
-package neuralnetworktrain.genetic.evaluator;
+package neuralnetworktrain.genetic.evaluation;
 
-import geneticalgorithm.evaluation.Evaluator;
+import geneticalgorithm.evaluation.FitnessFunction;
 import geneticalgorithm.individual.Individual;
 import neuralnetwork.Network;
 import neuralnetwork.errorevaluation.ErrorEvaluator;
 import neuralnetwork.transferfunction.TransferFunction;
 
-public abstract class NetworkEvaluator<T extends Individual> implements Evaluator<T> {
+/**
+ * A fitness function that rates individuals that represent neural networks.
+ * The better the network is in classifying certain data the higher the fitness of the individual
+ * @param <T> the class of the Individuals that can be evaluated.
+ */
+public abstract class NetworkFitnessFunction<T extends Individual> implements FitnessFunction<T> {
+    /**
+     * The transfer function to use in the network
+     */
     TransferFunction transferFunction;
+    /**
+     * The input of the network
+     */
     double[][] feature;
+    /**
+     * The expected output of the network
+     */
     double[][] observed;
+
+    /**
+     * The size of the layers in the network
+     */
     int[] layersSize;
+
+    /**
+     * The algorithm to evaluate the error of a network.
+     */
     ErrorEvaluator errorEvaluator;
 
-    public NetworkEvaluator() {
+    public NetworkFitnessFunction() {
     }
 
-    public NetworkEvaluator(double[][] feature,double[][] observed, ErrorEvaluator errorEvaluator, TransferFunction transferFunction,int... layersSize) {
+    public NetworkFitnessFunction(double[][] feature, double[][] observed, ErrorEvaluator errorEvaluator, TransferFunction transferFunction, int... layersSize) {
         this.layersSize = layersSize;
         setFeature(feature);
         setObserved(observed);
@@ -37,9 +59,6 @@ public abstract class NetworkEvaluator<T extends Individual> implements Evaluato
     }
 
     public void setFeature(double[][] feature) {
-//        if(feature[0].length > layersSize[0]) {
-//            throw new RuntimeException("Provided feature with length "+feature[0].length+" while there are "+layersSize[0]+" neurons in first layer. Must be less or equal");
-//        }
         this.feature = feature;
     }
 
@@ -63,11 +82,16 @@ public abstract class NetworkEvaluator<T extends Individual> implements Evaluato
     }
 
     @Override
-    public double evaluate(T individual) {
+    public double getFitness(T individual) {
 
         Network networkFromIndividual = createNetworkFromIndividual(individual);
         return 1- errorEvaluator.evaluateError(networkFromIndividual,feature,observed);
     }
 
+    /**
+     * Any implementation must be able to translate an individual to a neural network
+     * @param individual The individual to translate
+     * @return a neural network that is represented by the individual
+     */
     public abstract Network createNetworkFromIndividual(T individual);
 }

@@ -1,20 +1,20 @@
 package geneticalgorithm;
 
 
-import geneticalgorithm.evaluation.BitsetEvaluator;
-import geneticalgorithm.individual.BitSetIndividual;
+import geneticalgorithm.evaluation.FitnessFunction;
+import geneticalgorithm.individual.BinaryIndividual;
 
-public class StringMatchingEvaluator implements BitsetEvaluator<BitSetIndividual> {
+public class StringMatchingFitnessFunction implements FitnessFunction<BinaryIndividual> {
 
     String wanted;
 
-    public StringMatchingEvaluator(String wanted) {
+    public StringMatchingFitnessFunction(String wanted) {
         this.wanted = wanted;
     }
 
 
     @Override
-    public double evaluate(BitSetIndividual individual) {
+    public double getFitness(BinaryIndividual individual) {
         int count = 0;
         String s = new String(individual.getGenome().toByteArray());
         int i =0;

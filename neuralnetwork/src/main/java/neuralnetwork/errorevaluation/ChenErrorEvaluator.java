@@ -2,6 +2,13 @@ package neuralnetwork.errorevaluation;
 
 import neuralnetwork.Network;
 
+/**
+ * Like MeanSquareErrorEvaluator, except the result as divided by 2, as defined in the article:
+ * Evolutionary design of constructive multilayer feedforward neural network
+ * by Ching-Han Chen, Tun-Kai Yao, Chia-Ming Kuo and Chen-Yuan Chen
+ *
+ * http://jvc.sagepub.com/content/early/2012/09/12/1077546312456726
+ */
 public class ChenErrorEvaluator implements ErrorEvaluator {
     @Override
     public double evaluateError(Network network, double[][] feature, double[][] observed) {
