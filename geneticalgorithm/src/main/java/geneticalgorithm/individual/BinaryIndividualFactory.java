@@ -8,20 +8,20 @@ import java.util.Random;
  */
 public class BinaryIndividualFactory implements IndividualFactory<BinaryIndividual> {
     private final Random rnd;
-    int numGenes;
+    int numBits;
 
-    public BinaryIndividualFactory(int numGenes) {
-        this.numGenes = numGenes;
+    public BinaryIndividualFactory(int numBits) {
+        this.numBits = numBits;
         rnd = new Random();
     }
 
     @Override
     public BinaryIndividual createIndividual() {
-        BitSet genome = new BitSet(numGenes);
-        for(int j=0;j<numGenes;j++) {
+        BitSet genome = new BitSet(numBits);
+        for(int j=0;j< numBits;j++) {
             genome.set(j,rnd.nextBoolean());
         }
 
-        return new BinaryIndividual(genome, numGenes);
+        return new BinaryIndividual(genome, numBits);
     }
 }

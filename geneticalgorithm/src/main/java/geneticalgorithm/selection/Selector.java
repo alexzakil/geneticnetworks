@@ -11,5 +11,5 @@ import java.util.List;
  * The resulting list may have the same individual appear more then once.
  */
 public interface Selector {
-    public <T extends Individual> List<T> select(Collection<T> population);
+    public <T extends Individual> List<T> select(List<T> population);
 }

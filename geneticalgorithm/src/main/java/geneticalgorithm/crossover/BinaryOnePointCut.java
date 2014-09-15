@@ -28,7 +28,7 @@ public class BinaryOnePointCut implements CrossOver<BinaryIndividual>{
             BitSet genome01 = (BitSet) genome0.clone();
             BitSet genome10 = (BitSet) genome1.clone();
 
-            int numGenes = mate0.getNumGenes();
+            int numGenes = mate0.getNumBits();
 
             for(int i = NumberUtils.rnd.nextInt(numGenes);i<numGenes;i++) {
                 genome01.set(i, genome1.get(i));

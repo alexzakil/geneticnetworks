@@ -8,10 +8,10 @@ import java.util.Random;
 public class RealListIndividualFactory implements IndividualFactory<RealListIndividual> {
     private final Random rnd;
     private final double min,max;
-    int numGenes;
+    int numBits;
 
-    public RealListIndividualFactory(int numGenes, double min, double max) {
-        this.numGenes = numGenes;
+    public RealListIndividualFactory(int numBits, double min, double max) {
+        this.numBits = numBits;
         rnd = new Random();
         this.min= min;
         this.max = max;
@@ -19,8 +19,8 @@ public class RealListIndividualFactory implements IndividualFactory<RealListIndi
 
     @Override
     public RealListIndividual createIndividual() {
-        double[] genome = new double[numGenes];
-        for(int j=0;j<numGenes;j++) {
+        double[] genome = new double[numBits];
+        for(int j=0;j< numBits;j++) {
             genome[j] = rnd.nextDouble()*(max-min) + min;
         }
 

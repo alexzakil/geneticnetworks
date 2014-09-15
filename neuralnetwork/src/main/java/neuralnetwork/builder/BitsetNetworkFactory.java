@@ -11,7 +11,7 @@ import java.util.BitSet;
  */
 public class BitsetNetworkFactory extends AbstractNetworkFactory {
     private final int maxUnnormalizedWeight;
-    private int genesForOneNumber;
+    private int bitsForOneNumber;
     private double maxParam;
     private double minParam;
     BitSet bitset;
@@ -22,14 +22,14 @@ public class BitsetNetworkFactory extends AbstractNetworkFactory {
      * @param bitset the bitset to convert to a neural network
      * @param minParam minimum value of a parameter
      * @param maxParam maximum value of a parameter
-     * @param genesForOneNumber number of genes to represent one number
+     * @param bitsForOneNumber number of bits to represent one number
      */
-    public BitsetNetworkFactory(BitSet bitset, double minParam,double maxParam, int genesForOneNumber) {
+    public BitsetNetworkFactory(BitSet bitset, double minParam,double maxParam, int bitsForOneNumber) {
         this.maxParam = maxParam;
         this.minParam = minParam;
         this.bitset = bitset;
-        this.genesForOneNumber = genesForOneNumber;
-        maxUnnormalizedWeight = (int) (Math.pow(2,genesForOneNumber) - 1);
+        this.bitsForOneNumber = bitsForOneNumber;
+        maxUnnormalizedWeight = (int) (Math.pow(2, bitsForOneNumber) - 1);
     }
 
     @Override
@@ -40,9 +40,9 @@ public class BitsetNetworkFactory extends AbstractNetworkFactory {
     protected double[] getNeuronParams(int numberOfParams) {
         double[] params = new double[numberOfParams];
         for (int i = 0; i < params.length; i++) {
-            double number = NumberUtils.extractNumber(bitset.get(currBitIndex, currBitIndex + genesForOneNumber));
+            double number = NumberUtils.extractNumber(bitset.get(currBitIndex, currBitIndex + bitsForOneNumber));
             params[i] = (maxParam - minParam) * number / maxUnnormalizedWeight + minParam;
-            currBitIndex += genesForOneNumber;
+            currBitIndex += bitsForOneNumber;
         }
         return params;
     }

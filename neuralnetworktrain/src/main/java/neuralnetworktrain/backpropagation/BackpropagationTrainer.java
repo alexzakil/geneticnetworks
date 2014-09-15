@@ -110,7 +110,7 @@ public class BackpropagationTrainer extends AbstractNeuralNetworkTrainer {
             error = errorEvaluator.evaluateError(network, feature, observed);
             generation++;
             if (generation % 100 == 0) {
-                logger.info("Generation: " + generation + " Fitness " + (1 - error));
+                logger.debug("Generation: " + generation + " Fitness " + (1 - error));
 
             }
 

@@ -9,34 +9,34 @@ import neuralnetwork.transferfunction.TransferFunction;
 
 /**
  * The fitness function of BitSetIndividuals that represent a neural network.
- * The individuals bitset must have length that is equal to genesForOneNumber*[number of neurons needed for the network]*[number of parameters needed per neuron]
+ * The individuals bitset must have length that is equal to bitsForOneNumber*[number of neurons needed for the network]*[number of parameters needed per neuron]
  */
 public class BitsetNetworkFitnessFunction extends NetworkFitnessFunction<BinaryIndividual> implements FitnessFunction<BinaryIndividual> {
 
     /**
      * How many bits represent one number.
      */
-    int genesForOneNumber = 4;
+    int bitsForOneNumber = 4;
 
     public BitsetNetworkFitnessFunction() {
     }
 
     @Override
     public Network createNetworkFromIndividual(BinaryIndividual individual) {
-        return new BitsetNetworkFactory(individual.getGenome(),-1,1,genesForOneNumber).createNetwork(feature[0].length,transferFunction,layersSize);
+        return new BitsetNetworkFactory(individual.getGenome(),-1,1, bitsForOneNumber).createNetwork(feature[0].length,transferFunction,layersSize);
     }
 
-    public BitsetNetworkFitnessFunction(double[][] feature, double[][] observed, ErrorEvaluator errorEvaluator, int genesForOneNumber, TransferFunction transferFunction, int... layersSize) {
+    public BitsetNetworkFitnessFunction(double[][] feature, double[][] observed, ErrorEvaluator errorEvaluator, int bitsForOneNumber, TransferFunction transferFunction, int... layersSize) {
         super(feature, observed, errorEvaluator, transferFunction,layersSize);
-        this.genesForOneNumber = genesForOneNumber;
+        this.bitsForOneNumber = bitsForOneNumber;
     }
 
-    public int getGenesForOneNumber() {
-        return genesForOneNumber;
+    public int getBitsForOneNumber() {
+        return bitsForOneNumber;
     }
 
-    public void setGenesForOneNumber(int genesForOneNumber) {
-        this.genesForOneNumber = genesForOneNumber;
+    public void setBitsForOneNumber(int bitsForOneNumber) {
+        this.bitsForOneNumber = bitsForOneNumber;
     }
 
 }

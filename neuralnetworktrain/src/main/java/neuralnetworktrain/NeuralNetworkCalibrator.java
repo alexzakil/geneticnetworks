@@ -12,16 +12,16 @@ import java.util.List;
 /**
  * A tool for testing which configurations work best for training neural networks.
  */
-public class NeuralNetworkCalibrator {
+public class NeuralNetworkCalibrator<T extends AbstractNeuralNetworkTrainer> {
     static final Logger logger = Logger.getLogger(NeuralNetworkCalibrator.class);
 
 
     /**
      * The trainer to use during the calibration
      */
-    AbstractNeuralNetworkTrainer neuralNetworkTrainer;
+    T neuralNetworkTrainer;
 
-    public NeuralNetworkCalibrator(AbstractNeuralNetworkTrainer neuralNetworkTrainer) {
+    public NeuralNetworkCalibrator(T neuralNetworkTrainer) {
         this.neuralNetworkTrainer = neuralNetworkTrainer;
     }
 
@@ -29,7 +29,7 @@ public class NeuralNetworkCalibrator {
         return neuralNetworkTrainer;
     }
 
-    public void setNeuralNetworkTrainer(AbstractNeuralNetworkTrainer neuralNetworkTrainer) {
+    public void setNeuralNetworkTrainer(T neuralNetworkTrainer) {
         this.neuralNetworkTrainer = neuralNetworkTrainer;
     }
 

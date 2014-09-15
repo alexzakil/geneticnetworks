@@ -3,47 +3,43 @@ package geneticalgorithm.selection;
 import geneticalgorithm.individual.Individual;
 import utils.NumberUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * A selector that returns a mating list equal to the size of the population.
  * Each slot in the list is drawn between all individuals of the population so that the change to win
- * is proportional to the fitness of the individual. It is probable that individuals with high fitness
+ * is proportional to the rank of the individual in the fitness scale.
+ *
+ * It is probable that individuals with high fitness
  * would appear more than once in the mating list, while individuals with low fitness would not appear at all
  */
-public class RouletteSelector implements Selector {
+public class RankRouletteSelector implements Selector {
     @Override
     public <T extends Individual> List<T> select(List<T> population) {
+        Collections.sort(population);
 
         int size = population.size();
 
-        double sumFitness = 0;
-        for (T individual : population) {
-            sumFitness+=individual.getFitness();
-        }
-        double[] cumulativeFitnesses = new double[size];
-        cumulativeFitnesses[0] = population.iterator().next().getFitness() / sumFitness;
+        double[] cumulativeRank = new double[size];
+        cumulativeRank[0] = 1;
 
         int i= 0;
         for (T individual : population) {
             if(i>0) {
-                cumulativeFitnesses[i] = cumulativeFitnesses[i - 1] + individual.getFitness()/sumFitness;
+                cumulativeRank[i] = cumulativeRank[i - 1] + i + 1;
             }
             i++;
         }
-
+        double sumRank = cumulativeRank[cumulativeRank.length-1];
 
         List<T> selection = new ArrayList<>(size);
         for (i = 0; i < size; i++)
         {
-            double randomFitness = NumberUtils.rnd.nextDouble();
+            double randomRank = NumberUtils.rnd.nextDouble()*sumRank;
             int j = 0;
             Iterator<T> iterator = population.iterator();
             T selected = iterator.next();
-            while (randomFitness >= cumulativeFitnesses[j] && j< size) {
+            while (randomRank >= cumulativeRank[j] && j< size) {
                 j++;
                 selected = iterator.next();
             }

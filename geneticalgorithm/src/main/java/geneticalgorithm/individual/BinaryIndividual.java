@@ -12,12 +12,12 @@ public class BinaryIndividual extends Individual{
      */
     BitSet genome;
 
-    int numGenes;
+    int numBits;
 
 
-    public BinaryIndividual(BitSet genome, int numGenes) {
+    public BinaryIndividual(BitSet genome, int numBits) {
         this.genome = genome;
-        this.numGenes = numGenes;
+        this.numBits = numBits;
     }
 
 
@@ -26,13 +26,13 @@ public class BinaryIndividual extends Individual{
     }
 
 
-    public int getNumGenes() {
-        return numGenes;
+    public int getNumBits() {
+        return numBits;
     }
 
     @Override
     public Individual createClone() {
-        BinaryIndividual individual = new BinaryIndividual((BitSet) genome.clone(), numGenes);
+        BinaryIndividual individual = new BinaryIndividual((BitSet) genome.clone(), numBits);
         individual.setFitness(getFitness());
         return individual;
     }

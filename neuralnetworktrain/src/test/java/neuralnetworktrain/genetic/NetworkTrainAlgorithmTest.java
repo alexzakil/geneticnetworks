@@ -1,15 +1,20 @@
 package neuralnetworktrain.genetic;
 
 import geneticalgorithm.crossover.BinaryOnePointCut;
+import geneticalgorithm.crossover.BinaryUniformCrossover;
+import geneticalgorithm.crossover.RealListUniformCrossover;
 import geneticalgorithm.generation.AdditionGenerationManager;
+import geneticalgorithm.generation.DefaultGenerationManager;
 import geneticalgorithm.generation.GenerationManager;
 import geneticalgorithm.generation.ReplacementGenerationManager;
 import geneticalgorithm.individual.BinaryIndividual;
 import geneticalgorithm.mutation.BinaryMutator;
+import geneticalgorithm.selection.RankRouletteSelector;
 import geneticalgorithm.selection.RouletteSelector;
 import neuralnetwork.Network;
 import neuralnetwork.errorevaluation.ChenErrorEvaluator;
 import neuralnetwork.transferfunction.ParametrizedBiasSigmoidTransferFunction;
+import neuralnetworktrain.BitsetNeuralNetworkCalibrator;
 import neuralnetworktrain.NeuralNetworkCalibrator;
 
 import org.apache.log4j.Logger;
@@ -76,12 +81,35 @@ public class NetworkTrainAlgorithmTest {
         TrainingTestSplitter splitter = TestUtils.getIrisData();
 
 
-        GenerationManager<BinaryIndividual> generationManager = new ReplacementGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6,4);
+        DefaultGenerationManager<BinaryIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new BinaryOnePointCut(), new BinaryMutator(0.01),0.6);
         int[] layersSize = {4,3};
         BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
-                600, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 4);
-        NeuralNetworkCalibrator calibrator = new NeuralNetworkCalibrator(trainer);
+                600, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 5);
+        BitsetNeuralNetworkCalibrator calibrator = new BitsetNeuralNetworkCalibrator(trainer);
 
-        calibrator.calibrateLayerSize(250,15,splitter.getFullFeature(),splitter.getFullObserved(),2,5,2,8);
+        logger.info("=========");
+        calibrator.calibrateLayerSize(500, 50, splitter.getFullFeature(), splitter.getFullObserved(), 2, 2, 3,7);
+        generationManager.setSelector(new RankRouletteSelector());
+        calibrator.calibrateLayerSize(500, 50, splitter.getFullFeature(), splitter.getFullObserved(), 2, 2, 3, 7);
+    }
+
+    @Test
+    public void callibrateUniformCrossover() throws Exception {
+        TrainingTestSplitter splitter = TestUtils.getIrisData();
+
+
+        DefaultGenerationManager<BinaryIndividual> generationManager = new AdditionGenerationManager<>(new RouletteSelector(), new BinaryUniformCrossover(), new BinaryMutator(0.01),0.6);
+
+        int[] layersSize = {4,3};
+        BitsetGeneticAlgorithmNetworkTrainer trainer = new BitsetGeneticAlgorithmNetworkTrainer(
+                600, 50, 0.0001,generationManager, new ChenErrorEvaluator(), layersSize, 5);
+        BitsetNeuralNetworkCalibrator calibrator = new BitsetNeuralNetworkCalibrator(trainer);
+
+        calibrator.calibrateLayerSize(1000,50,splitter.getFullFeature(),splitter.getFullObserved(),2,2,3,10);
+        generationManager.setSelector(new RankRouletteSelector());
+        calibrator.calibrateLayerSize(1000, 50, splitter.getFullFeature(), splitter.getFullObserved(), 2, 2, 3,10);
+        generationManager.setCrossOver(new BinaryUniformCrossover());
+        calibrator.calibrateLayerSize(1000, 50, splitter.getFullFeature(), splitter.getFullObserved(), 2, 2, 3,10);
+
     }
 }

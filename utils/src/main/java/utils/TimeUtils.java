@@ -9,7 +9,7 @@ public class TimeUtils {
     /**
      * A utility method to format time
      * @param millis
-     * @return
+     * @return the time period formatted string
      */
     public static String formatTimePeriod(long millis){
         String time = "";

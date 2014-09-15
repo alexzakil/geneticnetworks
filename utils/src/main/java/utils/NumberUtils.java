@@ -9,8 +9,8 @@ public class NumberUtils {
 
     /**
      * Converts a bit set to a number.
-     * @param bitSet
-     * @return
+     * @param bitSet the BitSet
+     * @return  the number encoded by this BitSet
      */
     public static double extractNumber(BitSet bitSet) {
 

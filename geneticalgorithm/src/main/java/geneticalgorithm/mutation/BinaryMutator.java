@@ -21,7 +21,7 @@ public class BinaryMutator implements Mutator<BinaryIndividual> {
     @Override
     public boolean mutate(BinaryIndividual individual) {
         boolean mutated = false;
-        for(int i=0; i<individual.getNumGenes(); i++) {
+        for(int i=0; i<individual.getNumBits(); i++) {
             if(NumberUtils.rnd.nextFloat() < mutationProbability) {
                 individual.getGenome().flip(i);
                 mutated = true;

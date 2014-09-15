@@ -39,7 +39,7 @@ public abstract class AbstractNetworkFactory implements NetworkFactory{
     /**
      * Returns parameters for a single neuron
      * @param numberOfParams number of parameters needed.
-     * @return
+     * @return an array of parameter numbers for the neuron
      */
     protected abstract double[] getNeuronParams(int numberOfParams);
 

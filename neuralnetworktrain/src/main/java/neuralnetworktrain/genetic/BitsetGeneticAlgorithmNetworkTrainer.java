@@ -13,35 +13,35 @@ import neuralnetworktrain.genetic.evaluation.BitsetNetworkFitnessFunction;
  */
 public class BitsetGeneticAlgorithmNetworkTrainer extends GeneticAlgorithmNetworkTrainer<BinaryIndividual> {
 
-    private int genesForOneNumber;
+    private int bitsForOneNumber;
 
 
     public BitsetGeneticAlgorithmNetworkTrainer() {
     }
 
-    public BitsetGeneticAlgorithmNetworkTrainer(int maxGenerations, int populationSize, double wantedError, GenerationManager<BinaryIndividual> generationManager, ErrorEvaluator errorEvaluator, int[] layersSize, int genesForOneNumber) {
+    public BitsetGeneticAlgorithmNetworkTrainer(int maxGenerations, int populationSize, double wantedError, GenerationManager<BinaryIndividual> generationManager, ErrorEvaluator errorEvaluator, int[] layersSize, int bitsForOneNumber) {
         super(maxGenerations, populationSize, wantedError, generationManager, errorEvaluator, layersSize);
-        this.genesForOneNumber = genesForOneNumber;
+        this.bitsForOneNumber = bitsForOneNumber;
 
     }
 
     @Override
     protected BitsetNetworkFitnessFunction createNetworkFitnessFunction(double[][] feature, double[][] observed, TransferFunction transferFunction) {
-        return new BitsetNetworkFitnessFunction(feature, observed, errorEvaluator, genesForOneNumber,  transferFunction, layersSize);
+        return new BitsetNetworkFitnessFunction(feature, observed, errorEvaluator, bitsForOneNumber,  transferFunction, layersSize);
     }
 
     @Override
     protected IndividualFactory<BinaryIndividual> createIndividualFactory(int numberOfParamsNeeded) {
-        return new BinaryIndividualFactory(numberOfParamsNeeded*genesForOneNumber);
+        return new BinaryIndividualFactory(numberOfParamsNeeded* bitsForOneNumber);
     }
 
 
-    public int getGenesForOneNumber() {
-        return genesForOneNumber;
+    public int getBitsForOneNumber() {
+        return bitsForOneNumber;
     }
 
-    public void setGenesForOneNumber(int genesForOneNumber) {
-        this.genesForOneNumber = genesForOneNumber;
+    public void setBitsForOneNumber(int bitsForOneNumber) {
+        this.bitsForOneNumber = bitsForOneNumber;
     }
 
 }

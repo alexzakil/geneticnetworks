@@ -107,7 +107,7 @@ public class GeneticAlgorithm <I extends Individual>{
             Collections.sort(population);
             generation++;
             if(generation % 100 == 0){
-                logger.info("Generation: " + generation + " Fitness: " + population.get(population.size()-1).getFitness());
+                logger.debug("Generation: " + generation + " Fitness: " + population.get(population.size()-1).getFitness());
             }
         }while (generation < maxGenerations && population.get(population.size()-1).getFitness() < requiredFitness);
         return population;
